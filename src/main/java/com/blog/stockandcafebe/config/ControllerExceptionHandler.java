@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
 @ControllerAdvice
-public class exceptionHandler {
+public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e) {
