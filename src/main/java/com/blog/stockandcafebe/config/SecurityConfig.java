@@ -22,13 +22,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public ApiCheckFilter apiCheckFilter() {
-        return new ApiCheckFilter("/articles/**");
+    public JWTUtil jwtUtil() {
+        return new JWTUtil();
     }
 
     @Bean
-    public JWTUtil jwtUtil() {
-        return new JWTUtil();
+    public ApiCheckFilter apiCheckFilter() {
+        return new ApiCheckFilter("/articles/**", jwtUtil());
     }
 
     @Bean
@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/auth/manager/**").hasRole("MANAGER");
         http.authorizeRequests().antMatchers("/auth/admin/**").hasRole("ADMIN");
         http.authorizeRequests().antMatchers("/members/**").hasRole("USER");
-        http.authorizeRequests().antMatchers("/articles/**").hasRole("USER");
+//        http.authorizeRequests().antMatchers("/articles/**").hasRole("USER");
         http.authorizeRequests().antMatchers("/replies/**").hasRole("USER");
         http.csrf().disable();
         http.logout();
