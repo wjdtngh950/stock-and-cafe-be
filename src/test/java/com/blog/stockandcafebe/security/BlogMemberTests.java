@@ -1,8 +1,8 @@
 package com.blog.stockandcafebe.security;
 
-import com.blog.stockandcafebe.entity.Member;
-import com.blog.stockandcafebe.entity.MemberRole;
-import com.blog.stockandcafebe.repository.MemberRepository;
+import com.blog.stockandcafebe.entity.BlogMember;
+import com.blog.stockandcafebe.entity.BlogMemberRole;
+import com.blog.stockandcafebe.repository.BlogMemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,10 +12,10 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
-public class MemberTests {
+public class BlogMemberTests {
 
     @Autowired
-    private MemberRepository repository;
+    private BlogMemberRepository repository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -23,26 +23,25 @@ public class MemberTests {
     @Test
     public void insertDummies() {
         IntStream.rangeClosed(1, 100).forEach(i -> {
-            Member member = Member.builder()
-                    .memberId("saddummy" + i)
+            BlogMember blogMember = BlogMember.builder()
                     .email("saddummy" + i + "@gmail.com")
                     .name("dummy" + i)
                     .fromSocial(false)
                     .password(passwordEncoder.encode("1234"))
                     .build();
-            member.addMemberRole(MemberRole.USER);
+            blogMember.addMemberRole(BlogMemberRole.USER);
             if (i > 80)
-                member.addMemberRole(MemberRole.MANAGER);
+                blogMember.addMemberRole(BlogMemberRole.MANAGER);
             if (i > 90)
-                member.addMemberRole(MemberRole.ADMIN);
-            repository.save(member);
+                blogMember.addMemberRole(BlogMemberRole.ADMIN);
+            repository.save(blogMember);
         });
     }
 
     @Test
     public void testRead() {
-        Optional<Member> result = repository.findById("saddummy99", false);
-        Member member = result.get();
-        System.out.println(member);
+        Optional<BlogMember> result = repository.findByEmail("saddummy99@gmail.com", false);
+        BlogMember blogMember = result.get();
+        System.out.println(blogMember);
     }
 }

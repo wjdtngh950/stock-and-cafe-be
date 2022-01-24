@@ -21,7 +21,7 @@ public class Reply extends BaseEntity {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member writer;
+    private BlogMember writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Article article;

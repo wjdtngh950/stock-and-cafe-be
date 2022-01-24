@@ -12,11 +12,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @ToString
-public class Member extends BaseEntity {
+public class BlogMember extends BaseEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private String memberId;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -24,17 +24,15 @@ public class Member extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false)
-    private String email;
 
     @Column(name = "from_social", nullable = false)
     private boolean fromSocial;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<MemberRole> roleSet = new HashSet<>();
+    private Set<BlogMemberRole> roleSet = new HashSet<>();
 
-    public void addMemberRole(MemberRole memberRole) {
-        roleSet.add(memberRole);
+    public void addMemberRole(BlogMemberRole blogMemberRole) {
+        roleSet.add(blogMemberRole);
     }
 }

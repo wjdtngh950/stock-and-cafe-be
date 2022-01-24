@@ -1,5 +1,5 @@
 package com.blog.stockandcafebe.entity;
 
-public enum MemberRole {
+public enum BlogMemberRole {
     USER, MANAGER, ADMIN
 }
