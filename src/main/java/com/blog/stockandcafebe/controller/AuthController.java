@@ -19,6 +19,11 @@ public class AuthController {
         log.info("testMember..........");
     }
 
+    @GetMapping("/manager")
+    public void testManager() {
+        log.info("testManager..........");
+    }
+
     @GetMapping("/admin")
     public void testAdmin() {
         log.info("testAdmin..........");
