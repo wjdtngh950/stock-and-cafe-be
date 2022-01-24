@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-        return new ApiCheckFilter();
+        return new ApiCheckFilter("/articles/**");
     }
 
     @Bean
@@ -33,8 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").denyAll();
+        http.authorizeRequests().antMatchers("/auth/all/**").permitAll();
+        http.authorizeRequests().antMatchers("/auth/member/**").hasRole("USER");
+        http.authorizeRequests().antMatchers("/auth/manager/**").hasRole("MANAGER");
+        http.authorizeRequests().antMatchers("/auth/admin/**").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers("/members/**").hasRole("USER");
+        http.authorizeRequests().antMatchers("/articles/**").hasRole("USER");
+        http.authorizeRequests().antMatchers("/replies/**").hasRole("USER");
         http.csrf().disable();
+        http.logout();
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
