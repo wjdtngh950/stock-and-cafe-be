@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-// TODO: Fix me
 @Slf4j
 @Getter
 @Setter
