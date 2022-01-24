@@ -3,6 +3,7 @@ package com.blog.stockandcafebe.config;
 import com.blog.stockandcafebe.security.filter.ApiCheckFilter;
 import com.blog.stockandcafebe.security.filter.ApiLoginFilter;
 import com.blog.stockandcafebe.security.handler.ApiLoginFailHandler;
+import com.blog.stockandcafebe.security.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +27,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public JWTUtil jwtUtil() {
+        return new JWTUtil();
+    }
+
+    @Bean
     public ApiLoginFilter apiLoginFilter() throws Exception {
-        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login");
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager());
         apiLoginFilter.setAuthenticationFailureHandler(new ApiLoginFailHandler());
         return apiLoginFilter;

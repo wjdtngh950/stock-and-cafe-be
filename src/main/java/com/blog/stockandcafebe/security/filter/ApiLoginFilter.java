@@ -1,5 +1,7 @@
 package com.blog.stockandcafebe.security.filter;
 
+import com.blog.stockandcafebe.security.dto.BlogAuthMemberDto;
+import com.blog.stockandcafebe.security.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,12 +14,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public ApiLoginFilter(String defaultFilterProcessesUrl) {
+    private JWTUtil jwtUtil;
+
+    public ApiLoginFilter(String defaultFilterProcessesUrl, JWTUtil jwtUtil) {
         super(defaultFilterProcessesUrl);
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -44,5 +50,15 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info("----------ApiLoginFilter----------");
         log.info("successfulAuthentication: " + authResult);
         log.info(authResult.getPrincipal().toString());
+        String email = ((BlogAuthMemberDto) authResult.getPrincipal()).getUsername();
+        String token = null;
+        try {
+            token = jwtUtil.generateToken(email);
+            response.setContentType("text/plain");
+            response.getOutputStream().write(token.getBytes());
+            log.info(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

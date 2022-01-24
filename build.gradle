@@ -29,6 +29,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'net.minidev', name: 'json-smart', version: '2.4.7'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 }
 
 test {
