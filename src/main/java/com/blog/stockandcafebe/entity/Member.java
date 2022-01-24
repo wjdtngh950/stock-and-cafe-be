@@ -27,7 +27,7 @@ public class Member extends BaseEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "url", nullable = false)
-    private String url;
+    @Column(name = "from_social", nullable = false)
+    private boolean fromSocial;
 
 }
