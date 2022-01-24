@@ -2,6 +2,7 @@ package com.blog.stockandcafebe.security.filter;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -45,7 +46,8 @@ public class ApiCheckFilter extends OncePerRequestFilter {
                 String message = "FAIL CHECK API TOKEN";
                 json.put("code", "403");
                 json.put("message", message);
-                out.print("{code: 403, message: fail");
+                out.print(json);
+                return;
             }
         }
         filterChain.doFilter(request, response);
