@@ -1,8 +1,8 @@
 package com.blog.stockandcafebe.security.service;
 
 import com.blog.stockandcafebe.entity.Account;
-import com.blog.stockandcafebe.repository.BlogMemberRepository;
-import com.blog.stockandcafebe.security.dto.BlogAuthMemberDto;
+import com.blog.stockandcafebe.repository.AccountRepository;
+import com.blog.stockandcafebe.security.dto.AccountAuthDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,22 +17,22 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BlogUserDetailsService implements UserDetailsService {
+public class AccountDetailsService implements UserDetailsService {
 
-    private final BlogMemberRepository blogMemberRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("BlogUserDetailsService loadUserByUsername " + username);
-        Optional<Account> result = blogMemberRepository.findByEmail(username, false);
+        log.info("AccountDetailsService loadUserByUsername " + username);
+        Optional<Account> result = accountRepository.findByEmail(username, false);
         if (result.isEmpty())
             throw new UsernameNotFoundException("Check Email or Social");
 
         Account account = result.get();
 
-        log.info("Blog Member: " + account);
+        log.info("Account: " + account);
 
-        BlogAuthMemberDto blogAuthMember = new BlogAuthMemberDto(
+        AccountAuthDto accountAuthDto = new AccountAuthDto(
                 account.getEmail(),
                 account.getPassword(),
                 account.isFromSocial(),
@@ -41,9 +41,9 @@ public class BlogUserDetailsService implements UserDetailsService {
                        .collect(Collectors.toSet())
         );
 
-        blogAuthMember.setName(account.getName());
-        blogAuthMember.setFromSocial(account.isFromSocial());
+        accountAuthDto.setName(account.getName());
+        accountAuthDto.setFromSocial(account.isFromSocial());
 
-        return blogAuthMember;
+        return accountAuthDto;
     }
 }

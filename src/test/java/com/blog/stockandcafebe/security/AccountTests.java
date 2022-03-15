@@ -2,7 +2,7 @@ package com.blog.stockandcafebe.security;
 
 import com.blog.stockandcafebe.entity.Account;
 import com.blog.stockandcafebe.entity.AccountRole;
-import com.blog.stockandcafebe.repository.BlogMemberRepository;
+import com.blog.stockandcafebe.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 public class AccountTests {
 
     @Autowired
-    private BlogMemberRepository repository;
+    private AccountRepository repository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

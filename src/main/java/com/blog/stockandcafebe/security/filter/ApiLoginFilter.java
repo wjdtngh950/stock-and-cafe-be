@@ -1,9 +1,8 @@
 package com.blog.stockandcafebe.security.filter;
 
-import com.blog.stockandcafebe.security.dto.BlogAuthMemberDto;
+import com.blog.stockandcafebe.security.dto.AccountAuthDto;
 import com.blog.stockandcafebe.security.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -14,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -50,7 +48,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info("----------ApiLoginFilter----------");
         log.info("successfulAuthentication: " + authResult);
         log.info(authResult.getPrincipal().toString());
-        String email = ((BlogAuthMemberDto) authResult.getPrincipal()).getUsername();
+        String email = ((AccountAuthDto) authResult.getPrincipal()).getUsername();
         String token = null;
         try {
             token = jwtUtil.generateToken(email);

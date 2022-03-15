@@ -41,13 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/auth/all/**").permitAll();
-        http.authorizeRequests().antMatchers("/auth/member/**").hasRole("USER");
-        http.authorizeRequests().antMatchers("/auth/manager/**").hasRole("MANAGER");
-        http.authorizeRequests().antMatchers("/auth/admin/**").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("/members/**").hasRole("USER");
-//        http.authorizeRequests().antMatchers("/articles/**").hasRole("USER");
-        http.authorizeRequests().antMatchers("/replies/**").hasRole("USER");
+        http.authorizeRequests()
+            .antMatchers("/auth/all/**").permitAll()
+            .antMatchers("/auth/member/**").hasRole("USER")
+            .antMatchers("/auth/manager/**").hasRole("MANAGER")
+            .antMatchers("/auth/admin/**").hasRole("ADMIN")
+            .antMatchers("/members/**").hasRole("USER")
+            //.antMatchers("/articles/**").hasRole("USER")
+            .antMatchers("/replies/**").hasRole("USER");
         http.csrf().disable();
         http.logout();
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);

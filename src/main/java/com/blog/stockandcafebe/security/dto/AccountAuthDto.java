@@ -13,12 +13,12 @@ import java.util.Collection;
 @Getter
 @Setter
 @ToString
-public class BlogAuthMemberDto extends User {
+public class AccountAuthDto extends User {
     private String email;
     private String name;
     private boolean fromSocial;
 
-    public BlogAuthMemberDto(
+    public AccountAuthDto(
             String username,
             String password,
             boolean fromSocial,
