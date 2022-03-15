@@ -5,6 +5,10 @@ spring.datasource:
   password: password
 
 spring.jpa:
-  hibernate.ddl-auto: update
+  hibernate.ddl-auto: create
   properties.hibernate.format_sql: true
   show-sql: true
+  database: mysql
+
+hibernate:
+  dialect: org.hibernate.dialect.MySQL8Dialect
