@@ -1,15 +1,15 @@
 package com.blog.stockandcafebe.service;
 
-import com.blog.stockandcafebe.dto.MemberDto;
-import com.blog.stockandcafebe.entity.BlogMember;
+import com.blog.stockandcafebe.dto.AccountDto;
+import com.blog.stockandcafebe.entity.Account;
 
 public interface MemberService {
-    default BlogMember dtoToEntity(MemberDto dto) {
+    default Account dtoToEntity(AccountDto dto) {
         // TODO: implement method
         return null;
     }
 
-    default MemberDto entityToDto(BlogMember entity) {
+    default AccountDto entityToDto(Account entity) {
         // TODO: implement method
         return null;
     }

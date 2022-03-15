@@ -1,6 +1,6 @@
 package com.blog.stockandcafebe.security.service;
 
-import com.blog.stockandcafebe.entity.BlogMember;
+import com.blog.stockandcafebe.entity.Account;
 import com.blog.stockandcafebe.repository.BlogMemberRepository;
 import com.blog.stockandcafebe.security.dto.BlogAuthMemberDto;
 import lombok.RequiredArgsConstructor;
@@ -24,25 +24,25 @@ public class BlogUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("BlogUserDetailsService loadUserByUsername " + username);
-        Optional<BlogMember> result = blogMemberRepository.findByEmail(username, false);
+        Optional<Account> result = blogMemberRepository.findByEmail(username, false);
         if (result.isEmpty())
             throw new UsernameNotFoundException("Check Email or Social");
 
-        BlogMember blogMember = result.get();
+        Account account = result.get();
 
-        log.info("Blog Member: " + blogMember);
+        log.info("Blog Member: " + account);
 
         BlogAuthMemberDto blogAuthMember = new BlogAuthMemberDto(
-                blogMember.getEmail(),
-                blogMember.getPassword(),
-                blogMember.isFromSocial(),
-                blogMember.getRoleSet().stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
-                        .collect(Collectors.toSet())
+                account.getEmail(),
+                account.getPassword(),
+                account.isFromSocial(),
+                account.getRoleSet().stream()
+                       .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                       .collect(Collectors.toSet())
         );
 
-        blogAuthMember.setName(blogMember.getName());
-        blogAuthMember.setFromSocial(blogMember.isFromSocial());
+        blogAuthMember.setName(account.getName());
+        blogAuthMember.setFromSocial(account.isFromSocial());
 
         return blogAuthMember;
     }

@@ -24,7 +24,7 @@ public class Article extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private BlogMember writer;
+    private Account writer;
 
     public void changeTitle(String title) {
         this.title = title;

@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @ToString
-public class BlogMember extends BaseEntity {
+public class Account extends BaseEntity {
 
     @Id
     @Column(name = "email", nullable = false)
@@ -30,9 +30,9 @@ public class BlogMember extends BaseEntity {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<BlogMemberRole> roleSet = new HashSet<>();
+    private Set<AccountRole> roleSet = new HashSet<>();
 
-    public void addMemberRole(BlogMemberRole blogMemberRole) {
-        roleSet.add(blogMemberRole);
+    public void addMemberRole(AccountRole accountRole) {
+        roleSet.add(accountRole);
     }
 }
