@@ -30,6 +30,12 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'net.minidev', name: 'json-smart', version: '2.4.7'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    // Querydsl
+    implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '5.0.0'
+    annotationProcessor "javax.persistence:javax.persistence-api"
+    annotationProcessor "javax.annotation:javax.annotation-api"
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
 }
 
 test {
