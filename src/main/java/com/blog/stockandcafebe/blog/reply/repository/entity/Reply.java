@@ -31,4 +31,8 @@ public class Reply extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Article article;
 
+    public void changeText(String text) {
+        this.text = text;
+    }
+
 }

@@ -6,6 +6,7 @@ import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.member.controller.dto.MemberDto;
 import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyDto;
 import com.blog.stockandcafebe.blog.reply.repository.entity.Reply;
+import com.blog.stockandcafebe.blog.reply.service.ReplyService;
 import com.blog.stockandcafebe.security.entity.MemberUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,38 +22,52 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ReplyController {
 
-    @GetMapping(value = "/replies/articles/{articleId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByArticleId(
-            @PathVariable Long articleId,
-            @RequestBody PageRequestDto pageRequestDto
-    ) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
+    private final ReplyService replyService;
 
-    @GetMapping(value = "/replies/members", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByMember(
-            @RequestBody PageRequestDto pageRequestDto,
-            @RequestBody MemberDto memberDto
-    ) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/replies/articles/{articleId}")
+    @PostMapping(value = "/articles/{articleId}/replies")
     public ResponseEntity<ReplyDto> register(
             @PathVariable Long articleId,
             @AuthenticationPrincipal MemberUser memberUser,
             @RequestBody ReplyDto replyDto
     ) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(
+                null,
+                HttpStatus.OK
+        );
     }
 
-    @PatchMapping(value = "/replies/articles/{articleId}")
+    @GetMapping(value = "/articles/{articleId}/replies", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByArticleId(
+            @PathVariable Long articleId,
+            @RequestBody PageRequestDto pageRequestDto
+    ) {
+        return new ResponseEntity<>(
+                null,
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping(value = "/members/{memberId}/replies", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByMember(
+            @RequestBody PageRequestDto pageRequestDto,
+            @RequestBody MemberDto memberDto
+    ) {
+        return new ResponseEntity<>(
+                null,
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping(value = "/articles/{articleId}/replies")
     public ResponseEntity<ReplyDto> modify(
             @PathVariable Long articleId,
             @AuthenticationPrincipal MemberUser memberUser,
             @RequestBody ArticleDto articleDto
     ) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(
+                null,
+                HttpStatus.OK
+        );
     }
 
 
@@ -62,6 +77,9 @@ public class ReplyController {
             @PathVariable Long replyId,
             @AuthenticationPrincipal MemberUser memberUser
     ) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(
+                null,
+                HttpStatus.OK
+        );
     }
 }

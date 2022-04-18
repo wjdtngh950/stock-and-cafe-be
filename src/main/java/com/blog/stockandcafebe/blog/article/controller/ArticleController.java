@@ -22,24 +22,31 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-
-    @GetMapping("/articles/{articleId}")
-    public ResponseEntity<ArticleDto> read(@PathVariable Long articleId) {
-        return new ResponseEntity<>(articleService.getDetail(articleId), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ArticleDto, Article>> getList(@RequestBody PageRequestDto pageRequestDto) {
-        return new ResponseEntity<>(articleService.getPage(pageRequestDto), HttpStatus.OK);
-    }
-
     @PostMapping(value = "/articles")
     public ResponseEntity<ArticleDto> register(
             @AuthenticationPrincipal MemberUser memberUser,
             @RequestBody ArticleDto articleDto
     ) {
-        articleDto.setWriter(memberUser.getMemberDto());
-        return new ResponseEntity<>(articleService.register(articleDto), HttpStatus.OK);
+        return new ResponseEntity<>(
+                articleService.register(memberUser.getMemberDto().getEmail(), articleDto),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/articles/{articleId}")
+    public ResponseEntity<ArticleDto> read(@PathVariable Long articleId) {
+        return new ResponseEntity<>(
+                articleService.getDetail(articleId),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageResultDto<ArticleDto, Article>> getList(@RequestBody PageRequestDto pageRequestDto) {
+        return new ResponseEntity<>(
+                articleService.getPage(pageRequestDto),
+                HttpStatus.OK
+        );
     }
 
     @PatchMapping(value = "articles/{articleId}")
@@ -61,7 +68,10 @@ public class ArticleController {
             @AuthenticationPrincipal MemberUser memberUser
     ) {
         articleService.remove(articleId, memberUser.getMemberDto().getEmail());
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(
+                null,
+                HttpStatus.OK
+        );
     }
 
 

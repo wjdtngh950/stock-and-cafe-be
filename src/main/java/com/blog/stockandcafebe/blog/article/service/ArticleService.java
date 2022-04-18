@@ -27,7 +27,7 @@ public interface ArticleService {
                 .build();
     }
 
-    ArticleDto register(ArticleDto dto);
+    ArticleDto register(String writerEmail, ArticleDto dto);
 
     ArticleDto getDetail(Long articleId);
 

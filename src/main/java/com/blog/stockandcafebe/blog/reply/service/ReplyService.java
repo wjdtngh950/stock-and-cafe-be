@@ -1,6 +1,8 @@
 package com.blog.stockandcafebe.blog.reply.service;
 
 import com.blog.stockandcafebe.blog.article.service.ArticleService;
+import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
+import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.member.service.MemberService;
 import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyDto;
 import com.blog.stockandcafebe.blog.reply.repository.entity.Reply;
@@ -26,5 +28,14 @@ public interface ReplyService {
                 .build();
     }
 
-    ReplyDto register(ReplyDto dto);
+    ReplyDto register(Long articleId, String writerEmail, ReplyDto dto);
+
+    PageResultDto<ReplyDto, Reply> getPageByArticleId(Long articleId, PageRequestDto requestDto);
+
+    PageResultDto<ReplyDto, Reply> getPageByMemberId(Long memberId, PageRequestDto requestDto);
+
+    ReplyDto modify(Long articleId, String writerEmail, Long replyId, ReplyDto replyDto);
+
+    void remove(Long articleId, String writerEmail, Long replyId);
+
 }

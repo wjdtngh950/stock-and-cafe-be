@@ -6,9 +6,12 @@ import com.blog.stockandcafebe.blog.article.repository.entity.Article;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.entity.QArticle;
+import com.blog.stockandcafebe.blog.member.repository.MemberRepository;
+import com.blog.stockandcafebe.blog.member.repository.entity.Member;
 import com.blog.stockandcafebe.exception.article.ArticleNotExist;
 import com.blog.stockandcafebe.exception.article.UnauthorizedArticleDelete;
 import com.blog.stockandcafebe.exception.article.UnauthorizedArticleModify;
+import com.blog.stockandcafebe.exception.member.MemberNotExist;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +29,27 @@ import java.util.function.Function;
 @Transactional
 public class ArticleServiceImpl implements ArticleService {
 
+    private final MemberRepository memberRepository;
+
     private final ArticleRepository articleRepository;
 
     @Override
-    public ArticleDto register(ArticleDto dto) {
+    public ArticleDto register(String writerEmail, ArticleDto dto) {
 
-        Article entity = ArticleService.dtoToEntity(dto);
+        Member member = memberRepository.findByEmail(writerEmail)
+                .orElseThrow(MemberNotExist::new);
+
+        Article entity = Article.builder()
+                .articleId(dto.getArticleId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .writer(member)
+                .build();
 
         Article result = articleRepository.save(entity);
 
         return ArticleService.entityToDto(result);
+
     }
 
     @Override
@@ -44,6 +58,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(ArticleNotExist::new);
 
         return ArticleService.entityToDto(result);
+
     }
 
     @Override
@@ -94,7 +109,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new UnauthorizedArticleDelete();
         }
 
-        articleRepository.deleteById(articleId);
+        articleRepository.delete(result);
 
     }
 
