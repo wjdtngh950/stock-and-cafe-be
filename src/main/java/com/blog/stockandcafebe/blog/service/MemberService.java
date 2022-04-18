@@ -22,6 +22,8 @@ public interface MemberService {
                         .password(entity.getPassword())
                         .name(entity.getName())
                         .fromSocial(entity.isFromSocial())
+                        .createdDate(entity.getCreatedDate())
+                        .updatedDate(entity.getUpdatedDate())
                         .build();
     }
     
