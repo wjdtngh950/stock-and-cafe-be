@@ -2,12 +2,12 @@ package com.blog.stockandcafebe.security.service;
 
 import com.blog.stockandcafebe.blog.entity.Member;
 import com.blog.stockandcafebe.blog.repository.MemberRepository;
+import com.blog.stockandcafebe.security.entity.MemberUser;
 import com.blog.stockandcafebe.security.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +35,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             grantedAuthorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         }
         
-        return new User(member.getEmail(), member.getPassword(), grantedAuthorities);
+        return new MemberUser(member, grantedAuthorities);
     }
     
     public Member authenticateByEmailAndPassword(String email, String password) {

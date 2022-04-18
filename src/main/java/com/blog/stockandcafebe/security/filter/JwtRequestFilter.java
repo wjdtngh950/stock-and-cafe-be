@@ -1,6 +1,7 @@
-package com.blog.stockandcafebe.security.config;
+package com.blog.stockandcafebe.security.filter;
 
 import com.blog.stockandcafebe.security.service.JwtUserDetailsService;
+import com.blog.stockandcafebe.security.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ import java.util.List;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
     
-    private static final List<String> EXCLUDE_URL = List.of("/api/v1/members", "/authenticate");
+    private static final List<String> EXCLUDE_URL = List.of("/api/v1/members", "/api/v1/authenticate");
     private final JwtUserDetailsService jwtUserDetailService;
     private final JwtTokenUtil jwtTokenUtil;
     

@@ -1,5 +1,6 @@
 package com.blog.stockandcafebe.security.config;
 
+import com.blog.stockandcafebe.security.filter.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -58,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
             .disable()
             .authorizeRequests()
-            .antMatchers("/authenticate", "/api/v1/members")
+            .antMatchers("/api/v1/authenticate", "/api/v1/members")
             .permitAll()
             .anyRequest()
             .authenticated()
