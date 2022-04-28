@@ -1,6 +1,5 @@
 package com.blog.stockandcafebe.blog.reply.controller;
 
-import com.blog.stockandcafebe.blog.article.controller.dto.ArticleDto;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.member.controller.dto.MemberDto;
@@ -31,7 +30,7 @@ public class ReplyController {
             @RequestBody ReplyDto replyDto
     ) {
         return new ResponseEntity<>(
-                null,
+                replyService.register(articleId, memberUser.getMemberDto().getEmail(), replyDto),
                 HttpStatus.OK
         );
     }
@@ -42,7 +41,7 @@ public class ReplyController {
             @RequestBody PageRequestDto pageRequestDto
     ) {
         return new ResponseEntity<>(
-                null,
+                replyService.getPageByArticleId(articleId, pageRequestDto),
                 HttpStatus.OK
         );
     }
@@ -53,23 +52,23 @@ public class ReplyController {
             @RequestBody MemberDto memberDto
     ) {
         return new ResponseEntity<>(
-                null,
+                replyService.getPageByMemberId(memberDto.getMemberId(), pageRequestDto),
                 HttpStatus.OK
         );
     }
 
-    @PatchMapping(value = "/articles/{articleId}/replies")
+    @PatchMapping(value = "/articles/{articleId}/replies/{replyId}")
     public ResponseEntity<ReplyDto> modify(
             @PathVariable Long articleId,
+            @PathVariable Long replyId,
             @AuthenticationPrincipal MemberUser memberUser,
-            @RequestBody ArticleDto articleDto
+            @RequestBody ReplyDto replyDto
     ) {
         return new ResponseEntity<>(
-                null,
+                replyService.modify(articleId, memberUser.getMemberDto().getEmail(), replyId, replyDto),
                 HttpStatus.OK
         );
     }
-
 
     @DeleteMapping(value = "/replies/articles/{articleId}/{replyId}")
     public ResponseEntity<Void> remove(
@@ -77,6 +76,7 @@ public class ReplyController {
             @PathVariable Long replyId,
             @AuthenticationPrincipal MemberUser memberUser
     ) {
+        replyService.remove(articleId, memberUser.getMemberDto().getEmail(), replyId);
         return new ResponseEntity<>(
                 null,
                 HttpStatus.OK
