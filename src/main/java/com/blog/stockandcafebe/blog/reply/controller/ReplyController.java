@@ -2,7 +2,6 @@ package com.blog.stockandcafebe.blog.reply.controller;
 
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
-import com.blog.stockandcafebe.blog.member.controller.dto.MemberDto;
 import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyDto;
 import com.blog.stockandcafebe.blog.reply.repository.entity.Reply;
 import com.blog.stockandcafebe.blog.reply.service.ReplyService;
@@ -42,17 +41,6 @@ public class ReplyController {
     ) {
         return new ResponseEntity<>(
                 replyService.getPageByArticleId(articleId, pageRequestDto),
-                HttpStatus.OK
-        );
-    }
-
-    @GetMapping(value = "/members/{memberId}/replies", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByMember(
-            @RequestBody PageRequestDto pageRequestDto,
-            @RequestBody MemberDto memberDto
-    ) {
-        return new ResponseEntity<>(
-                replyService.getPageByMemberId(memberDto.getMemberId(), pageRequestDto),
                 HttpStatus.OK
         );
     }
