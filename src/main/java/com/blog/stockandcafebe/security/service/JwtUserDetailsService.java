@@ -31,7 +31,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
-        if (email.equals("wjdtngh950@naver.com")) {
+        if (email.equals("platina.kusakina@gmail.com") || email.equals("wjdtngh950@gmail.com")) {
             grantedAuthorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         }
 
