@@ -70,7 +70,7 @@ public class ReplyController {
         );
     }
 
-    @DeleteMapping(value = "/replies/articles/{articleId}/{replyId}")
+    @DeleteMapping(value = "/articles/{articleId}/replies/{replyId}")
     public ResponseEntity<Void> remove(
             @PathVariable Long articleId,
             @PathVariable Long replyId,
