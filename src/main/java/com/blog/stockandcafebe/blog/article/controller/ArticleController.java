@@ -52,6 +52,7 @@ public class ArticleController {
     }
 
     @PatchMapping(value = "articles/{articleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArticleDto> modify(
             @PathVariable Long articleId,
             @AuthenticationPrincipal MemberUser memberUser,
@@ -65,6 +66,7 @@ public class ArticleController {
 
 
     @DeleteMapping(value = "/articles/{articleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> remove(
             @PathVariable Long articleId,
             @AuthenticationPrincipal MemberUser memberUser
