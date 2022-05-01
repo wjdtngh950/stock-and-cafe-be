@@ -45,7 +45,7 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ArticleDto, Article>> getList(@RequestBody PageRequestDto pageRequestDto) {
+    public ResponseEntity<PageResultDto<ArticleDto, Article>> getList(@RequestParam PageRequestDto pageRequestDto) {
         return new ResponseEntity<>(
                 articleService.getPage(pageRequestDto),
                 HttpStatus.OK

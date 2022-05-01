@@ -38,7 +38,7 @@ public class ReplyController {
     @GetMapping(value = "/articles/{articleId}/replies", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByArticleId(
             @PathVariable Long articleId,
-            @RequestBody PageRequestDto pageRequestDto
+            @RequestParam PageRequestDto pageRequestDto
     ) {
         return new ResponseEntity<>(
                 replyService.getPageByArticleId(articleId, pageRequestDto),
