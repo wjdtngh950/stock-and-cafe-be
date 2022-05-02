@@ -67,7 +67,7 @@ public class ReplyServiceImpl implements ReplyService {
         Pageable pageable = requestDto.getPagable(Sort.by("replyId")
                 .descending());
 
-        BooleanBuilder booleanBuilder = getSearch(Optional.of(articleId), Optional.empty(), requestDto);
+        BooleanBuilder booleanBuilder = getSearch(Optional.of(articleId), requestDto);
 
         Page<Reply> result = replyRepository.findAll(booleanBuilder, pageable);
 
@@ -120,7 +120,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     }
 
-    private BooleanBuilder getSearch(Optional<Long> articleId, Optional<Long> memberId, PageRequestDto requestDto) {
+    private BooleanBuilder getSearch(Optional<Long> articleId, PageRequestDto requestDto) {
 
         String keyword = requestDto.getKeyword();
 
@@ -129,8 +129,6 @@ public class ReplyServiceImpl implements ReplyService {
         QReply reply = QReply.reply;
 
         articleId.ifPresent(id -> booleanBuilder.and(reply.article.articleId.eq(id)));
-
-        memberId.ifPresent(id -> booleanBuilder.and(reply.writer.memberId.eq(id)));
 
         booleanBuilder.and(reply.replyId.gt(0L));
 
