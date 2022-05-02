@@ -19,6 +19,8 @@ public class ArticleResponseDto {
 
     private String content;
 
+    private String writerEmail;
+
     private String writerName;
 
     private LocalDateTime createdDate;

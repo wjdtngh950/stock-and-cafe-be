@@ -33,6 +33,7 @@ public interface ArticleService {
                 .articleId(entity.getArticleId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
+                .writerEmail(entity.getWriter().getEmail())
                 .writerName(entity.getWriter().getName())
                 .createdDate(entity.getCreatedDate())
                 .updatedDate(entity.getUpdatedDate())
