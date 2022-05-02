@@ -7,6 +7,7 @@ import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.member.repository.MemberRepository;
 import com.blog.stockandcafebe.blog.member.repository.entity.Member;
 import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyDto;
+import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyResponseDto;
 import com.blog.stockandcafebe.blog.reply.repository.ReplyRepository;
 import com.blog.stockandcafebe.blog.reply.repository.entity.QReply;
 import com.blog.stockandcafebe.blog.reply.repository.entity.Reply;
@@ -39,7 +40,7 @@ public class ReplyServiceImpl implements ReplyService {
     private final ReplyRepository replyRepository;
 
     @Override
-    public ReplyDto register(Long articleId, String writerEmail, ReplyDto dto) {
+    public ReplyResponseDto register(Long articleId, String writerEmail, ReplyDto dto) {
 
         Member member = memberRepository.findByEmail(writerEmail)
                 .orElseThrow(MemberNotExist::new);
@@ -56,12 +57,12 @@ public class ReplyServiceImpl implements ReplyService {
 
         Reply result = replyRepository.save(entity);
 
-        return ReplyService.entityToDto(result);
+        return ReplyService.entityToResponseDto(result);
 
     }
 
     @Override
-    public PageResultDto<ReplyDto, Reply> getPageByArticleId(Long articleId, PageRequestDto requestDto) {
+    public PageResultDto<ReplyResponseDto, Reply> getPageByArticleId(Long articleId, PageRequestDto requestDto) {
 
         Pageable pageable = requestDto.getPagable(Sort.by("replyId")
                 .descending());
@@ -70,36 +71,19 @@ public class ReplyServiceImpl implements ReplyService {
 
         Page<Reply> result = replyRepository.findAll(booleanBuilder, pageable);
 
-        Function<Reply, ReplyDto> fn = ReplyService::entityToDto;
+        Function<Reply, ReplyResponseDto> fn = ReplyService::entityToResponseDto;
 
         return new PageResultDto<>(result, fn);
 
     }
 
     @Override
-    public PageResultDto<ReplyDto, Reply> getPageByMemberId(Long memberId, PageRequestDto requestDto) {
+    public ReplyResponseDto modify(Long articleId, String writerEmail, Long replyId, ReplyDto replyDto) {
+        if (memberRepository.findByEmail(writerEmail).isEmpty())
+            throw new MemberNotExist();
 
-        Pageable pageable = requestDto.getPagable(Sort.by("replyId")
-                .descending());
-
-        BooleanBuilder booleanBuilder = getSearch(Optional.empty(), Optional.of(memberId), requestDto);
-
-        Page<Reply> result = replyRepository.findAll(booleanBuilder, pageable);
-
-        Function<Reply, ReplyDto> fn = ReplyService::entityToDto;
-
-        return new PageResultDto<>(result, fn);
-
-    }
-
-    @Override
-    public ReplyDto modify(Long articleId, String writerEmail, Long replyId, ReplyDto replyDto) {
-
-        Member member = memberRepository.findByEmail(writerEmail)
-                .orElseThrow(MemberNotExist::new);
-
-        Article article = articleRepository.findByArticleId(articleId)
-                .orElseThrow(ArticleNotExist::new);
+        if (articleRepository.findByArticleId(articleId).isEmpty())
+            throw new ArticleNotExist();
 
         Reply result = replyRepository.findByReplyId(replyId)
                 .orElseThrow(ReplyNotExist::new);
@@ -112,7 +96,7 @@ public class ReplyServiceImpl implements ReplyService {
             result.changeText(replyDto.getText());
         }
 
-        return ReplyService.entityToDto(result);
+        return ReplyService.entityToResponseDto(result);
 
     }
 

@@ -1,6 +1,7 @@
 package com.blog.stockandcafebe.blog.article.controller;
 
 import com.blog.stockandcafebe.blog.article.controller.dto.ArticleDto;
+import com.blog.stockandcafebe.blog.article.controller.dto.ArticleResponseDto;
 import com.blog.stockandcafebe.blog.article.repository.entity.Article;
 import com.blog.stockandcafebe.blog.article.service.ArticleService;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
@@ -37,7 +38,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{articleId}")
-    public ResponseEntity<ArticleDto> read(@PathVariable Long articleId) {
+    public ResponseEntity<ArticleResponseDto> read(@PathVariable Long articleId) {
         return new ResponseEntity<>(
                 articleService.getDetail(articleId),
                 HttpStatus.OK
@@ -45,7 +46,7 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ArticleDto, Article>> getList(@ModelAttribute PageRequestDto pageRequestDto) {
+    public ResponseEntity<PageResultDto<ArticleResponseDto, Article>> getList(@ModelAttribute PageRequestDto pageRequestDto) {
         return new ResponseEntity<>(
                 articleService.getPage(pageRequestDto),
                 HttpStatus.OK

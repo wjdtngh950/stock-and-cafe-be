@@ -1,6 +1,7 @@
 package com.blog.stockandcafebe.blog.article.service;
 
 import com.blog.stockandcafebe.blog.article.controller.dto.ArticleDto;
+import com.blog.stockandcafebe.blog.article.controller.dto.ArticleResponseDto;
 import com.blog.stockandcafebe.blog.article.repository.ArticleRepository;
 import com.blog.stockandcafebe.blog.article.repository.entity.Article;
 import com.blog.stockandcafebe.blog.article.repository.entity.QArticle;
@@ -53,16 +54,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto getDetail(Long articleId) {
+    public ArticleResponseDto getDetail(Long articleId) {
         Article result = articleRepository.findByArticleId(articleId)
                 .orElseThrow(ArticleNotExist::new);
 
-        return ArticleService.entityToDto(result);
+        return ArticleService.entityToResponseDto(result);
 
     }
 
     @Override
-    public PageResultDto<ArticleDto, Article> getPage(PageRequestDto requestDto) {
+    public PageResultDto<ArticleResponseDto, Article> getPage(PageRequestDto requestDto) {
 
         Pageable pageable = requestDto.getPagable(Sort.by("articleId")
                 .descending());
@@ -71,14 +72,14 @@ public class ArticleServiceImpl implements ArticleService {
 
         Page<Article> result = articleRepository.findAll(booleanBuilder, pageable);
 
-        Function<Article, ArticleDto> fn = ArticleService::entityToDto;
+        Function<Article, ArticleResponseDto> fn = ArticleService::entityToResponseDto;
 
         return new PageResultDto<>(result, fn);
 
     }
 
     @Override
-    public ArticleDto modify(Long articleId, String writerEmail, ArticleDto articleDto) {
+    public ArticleResponseDto modify(Long articleId, String writerEmail, ArticleDto articleDto) {
 
         Article result = articleRepository.findByArticleId(articleId)
                 .orElseThrow(ArticleNotExist::new);
@@ -95,7 +96,7 @@ public class ArticleServiceImpl implements ArticleService {
             result.changeContent(articleDto.getContent());
         }
 
-        return ArticleService.entityToDto(result);
+        return ArticleService.entityToResponseDto(result);
 
     }
 

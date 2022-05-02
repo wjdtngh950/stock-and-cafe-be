@@ -3,6 +3,7 @@ package com.blog.stockandcafebe.blog.reply.controller;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyDto;
+import com.blog.stockandcafebe.blog.reply.controller.dto.ReplyResponseDto;
 import com.blog.stockandcafebe.blog.reply.repository.entity.Reply;
 import com.blog.stockandcafebe.blog.reply.service.ReplyService;
 import com.blog.stockandcafebe.security.entity.MemberUser;
@@ -24,7 +25,7 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @PostMapping(value = "/articles/{articleId}/replies")
-    public ResponseEntity<ReplyDto> register(
+    public ResponseEntity<ReplyResponseDto> register(
             @PathVariable Long articleId,
             @AuthenticationPrincipal MemberUser memberUser,
             @RequestBody ReplyDto replyDto
@@ -36,7 +37,7 @@ public class ReplyController {
     }
 
     @GetMapping(value = "/articles/{articleId}/replies", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ReplyDto, Reply>> getRepliesByArticleId(
+    public ResponseEntity<PageResultDto<ReplyResponseDto, Reply>> getRepliesByArticleId(
             @PathVariable Long articleId,
             @ModelAttribute PageRequestDto pageRequestDto
     ) {
@@ -47,7 +48,7 @@ public class ReplyController {
     }
 
     @PatchMapping(value = "/articles/{articleId}/replies/{replyId}")
-    public ResponseEntity<ReplyDto> modify(
+    public ResponseEntity<ReplyResponseDto> modify(
             @PathVariable Long articleId,
             @PathVariable Long replyId,
             @AuthenticationPrincipal MemberUser memberUser,

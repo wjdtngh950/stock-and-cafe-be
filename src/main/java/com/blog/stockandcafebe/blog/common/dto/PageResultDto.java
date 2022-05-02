@@ -16,6 +16,8 @@ public class PageResultDto<D, E> {
 
     private int totalPage;
 
+    private long totalCount;
+
     private int page;
 
     private int size;
@@ -33,6 +35,7 @@ public class PageResultDto<D, E> {
                 .collect(Collectors.toList());
 
         totalPage = result.getTotalPages();
+        totalCount = result.getTotalElements();
 
         makePageList(result.getPageable());
 
