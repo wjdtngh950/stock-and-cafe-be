@@ -55,7 +55,7 @@ public class ArticleController {
 
     @PatchMapping(value = "articles/{articleId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ArticleDto> modify(
+    public ResponseEntity<ArticleResponseDto> modify(
             @PathVariable Long articleId,
             @AuthenticationPrincipal MemberUser memberUser,
             @RequestBody ArticleDto articleDto
