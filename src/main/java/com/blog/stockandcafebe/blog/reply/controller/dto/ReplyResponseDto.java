@@ -17,6 +17,8 @@ public class ReplyResponseDto {
 
     private String text;
 
+    private String writerEmail;
+
     private String writerName;
 
     private Long articleId;

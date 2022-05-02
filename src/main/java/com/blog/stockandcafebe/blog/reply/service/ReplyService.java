@@ -33,6 +33,7 @@ public interface ReplyService {
         return ReplyResponseDto.builder()
                 .replyId(entity.getReplyId())
                 .text(entity.getText())
+                .writerName(entity.getWriter().getEmail())
                 .writerName(entity.getWriter().getName())
                 .articleId(entity.getArticle().getArticleId())
                 .createdDate(entity.getCreatedDate())
