@@ -1,4 +1,4 @@
-package com.blog.stockandcafebe.blog.article.service;
+package com.blog.stockandcafebe.blog.stock.service;
 
 import com.blog.stockandcafebe.blog.article.controller.dto.ArticleDto;
 import com.blog.stockandcafebe.blog.article.controller.dto.ArticleResponseDto;
@@ -6,20 +6,24 @@ import com.blog.stockandcafebe.blog.article.repository.entity.Article;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.member.service.MemberService;
+import com.blog.stockandcafebe.blog.stock.controller.dto.StockDto;
+import com.blog.stockandcafebe.blog.stock.controller.dto.StockResponseDto;
+import com.blog.stockandcafebe.blog.stock.repository.entity.Stock;
 
-public interface ArticleService {
-    static Article dtoToEntity(ArticleDto dto) {
-        return Article.builder()
-                .articleId(dto.getArticleId())
+public interface StockService {
+
+    static Stock dtoToEntity(StockDto dto) {
+        return Stock.builder()
+                .stockId(dto.getStockId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .writer(MemberService.dtoToEntity(dto.getWriter()))
                 .build();
     }
 
-    static ArticleDto entityToDto(Article entity) {
-        return ArticleDto.builder()
-                .articleId(entity.getArticleId())
+    static StockDto entityToDto(Stock entity) {
+        return StockDto.builder()
+                .stockId(entity.getStockId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .writer(MemberService.entityToDto(entity.getWriter()))
@@ -28,9 +32,9 @@ public interface ArticleService {
                 .build();
     }
 
-    static ArticleResponseDto entityToResponseDto(Article entity) {
-        return ArticleResponseDto.builder()
-                .articleId(entity.getArticleId())
+    static StockResponseDto entityToResponseDto(Stock entity) {
+        return StockResponseDto.builder()
+                .stockId(entity.getStockId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .writerEmail(entity.getWriter().getEmail())
@@ -40,14 +44,14 @@ public interface ArticleService {
                 .build();
     }
 
-    ArticleDto register(String writerEmail, ArticleDto dto);
+    StockDto register(String writerEmail, StockDto dto);
 
-    ArticleResponseDto getDetail(Long articleId);
+    StockResponseDto getDetail(Long stockId);
 
-    PageResultDto<ArticleResponseDto, Article> getPage(PageRequestDto requestDto);
+    PageResultDto<StockResponseDto, Stock> getPage(PageRequestDto requestDto);
 
-    ArticleResponseDto modify(Long articleId, String writerEmail, ArticleDto dto);
+    StockResponseDto modify(Long stockId, String writerEmail, StockDto dto);
 
-    void remove(Long articleId, String writerEmail);
+    void remove(Long stockId, String writerEmail);
 
 }

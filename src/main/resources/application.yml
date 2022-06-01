@@ -1,9 +1,14 @@
 spring.datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
-  url: ${SAC_MYSQL_URL}
-  username: ${SAC_MYSQL_USERNAME}
-  password: ${SAC_MYSQL_PASSWORD}
+  url: jdbc:mysql://localhost:3306/STOCK_AND_CAFE
+  username: manager
+  password: password
 
 spring.jpa:
   show-sql: true
   open-in-view: false
+  hibernate:
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update

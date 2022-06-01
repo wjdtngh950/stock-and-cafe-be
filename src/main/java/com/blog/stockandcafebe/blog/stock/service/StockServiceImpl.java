@@ -1,14 +1,16 @@
-package com.blog.stockandcafebe.blog.article.service;
+package com.blog.stockandcafebe.blog.stock.service;
 
-import com.blog.stockandcafebe.blog.article.controller.dto.ArticleDto;
-import com.blog.stockandcafebe.blog.article.controller.dto.ArticleResponseDto;
-import com.blog.stockandcafebe.blog.article.repository.ArticleRepository;
 import com.blog.stockandcafebe.blog.article.repository.entity.Article;
-import com.blog.stockandcafebe.blog.article.repository.entity.QArticle;
+import com.blog.stockandcafebe.blog.article.service.ArticleService;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
 import com.blog.stockandcafebe.blog.member.repository.MemberRepository;
 import com.blog.stockandcafebe.blog.member.repository.entity.Member;
+import com.blog.stockandcafebe.blog.stock.controller.dto.StockDto;
+import com.blog.stockandcafebe.blog.stock.controller.dto.StockResponseDto;
+import com.blog.stockandcafebe.blog.stock.repository.StockRepository;
+import com.blog.stockandcafebe.blog.stock.repository.entity.QStock;
+import com.blog.stockandcafebe.blog.stock.repository.entity.Stock;
 import com.blog.stockandcafebe.exception.article.ArticleNotExist;
 import com.blog.stockandcafebe.exception.article.UnauthorizedArticleDelete;
 import com.blog.stockandcafebe.exception.article.UnauthorizedArticleModify;
@@ -28,58 +30,55 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ArticleServiceImpl implements ArticleService {
+public class StockServiceImpl implements StockService {
 
     private final MemberRepository memberRepository;
 
-    private final ArticleRepository articleRepository;
+    private final StockRepository stockRepository;
 
     @Override
-    public ArticleDto register(String writerEmail, ArticleDto dto) {
-
+    public StockDto register(String writerEmail, StockDto dto) {
         Member member = memberRepository.findByEmail(writerEmail)
                 .orElseThrow(MemberNotExist::new);
 
-        Article entity = Article.builder()
-                .articleId(dto.getArticleId())
+        Stock entity = Stock.builder()
+                .stockId(dto.getStockId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .writer(member)
                 .build();
 
-        Article result = articleRepository.save(entity);
+        Stock result = stockRepository.save(entity);
 
-        return ArticleService.entityToDto(result);
+        return StockService.entityToDto(result);
     }
 
     @Override
-    public ArticleResponseDto getDetail(Long articleId) {
-        Article result = articleRepository.findByArticleId(articleId)
+    public StockResponseDto getDetail(Long stockId) {
+        Stock result = stockRepository.findByStockId(stockId)
                 .orElseThrow(ArticleNotExist::new);
 
-        return ArticleService.entityToResponseDto(result);
+        return StockService.entityToResponseDto(result);
     }
 
     @Override
-    public PageResultDto<ArticleResponseDto, Article> getPage(PageRequestDto requestDto) {
-
-        Pageable pageable = requestDto.getPagable(Sort.by("articleId")
+    public PageResultDto<StockResponseDto, Stock> getPage(PageRequestDto requestDto) {
+        Pageable pageable = requestDto.getPagable(Sort.by("stockId")
                 .descending());
 
         BooleanBuilder booleanBuilder = getSearch(requestDto);
 
-        Page<Article> result = articleRepository.findAll(booleanBuilder, pageable);
+        Page<Stock> result = stockRepository.findAll(booleanBuilder, pageable);
 
-        Function<Article, ArticleResponseDto> fn = ArticleService::entityToResponseDto;
+        Function<Stock, StockResponseDto> fn = StockService::entityToResponseDto;
 
         return new PageResultDto<>(result, fn);
-
     }
 
     @Override
-    public ArticleResponseDto modify(Long articleId, String writerEmail, ArticleDto dto) {
+    public StockResponseDto modify(Long stockId, String writerEmail, StockDto dto) {
 
-        Article result = articleRepository.findByArticleId(articleId)
+        Stock result = stockRepository.findByStockId(stockId)
                 .orElseThrow(ArticleNotExist::new);
 
         if (!result.getWriter().getEmail().equals(writerEmail)) {
@@ -94,35 +93,31 @@ public class ArticleServiceImpl implements ArticleService {
             result.changeContent(dto.getContent());
         }
 
-        return ArticleService.entityToResponseDto(result);
-
+        return StockService.entityToResponseDto(result);
     }
 
     @Override
-    public void remove(Long articleId, String writerEmail) {
-
-        Article result = articleRepository.findByArticleId(articleId)
+    public void remove(Long stockId, String writerEmail) {
+        Stock result = stockRepository.findByStockId(stockId)
                 .orElseThrow(ArticleNotExist::new);
 
         if (!result.getWriter().getEmail().equals(writerEmail)) {
             throw new UnauthorizedArticleDelete();
         }
 
-        articleRepository.delete(result);
-
+        stockRepository.delete(result);
     }
 
     private BooleanBuilder getSearch(PageRequestDto requestDto) {
-
         String type = requestDto.getType();
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        QArticle article = QArticle.article;
+        QStock stock = QStock.stock;
 
         String keyword = requestDto.getKeyword();
 
-        BooleanExpression expression = article.articleId.gt(0L);
+        BooleanExpression expression = stock.stockId.gt(0L);
 
         booleanBuilder.and(expression);
 
@@ -134,19 +129,17 @@ public class ArticleServiceImpl implements ArticleService {
         BooleanBuilder conditionBuilder = new BooleanBuilder();
 
         if (type.contains("t")) {
-            conditionBuilder.or(article.title.contains(keyword));
+            conditionBuilder.or(stock.title.contains(keyword));
         }
         if (type.contains("c")) {
-            conditionBuilder.or(article.content.contains(keyword));
+            conditionBuilder.or(stock.content.contains(keyword));
         }
         if (type.contains("w")) {
-            conditionBuilder.or(article.writer.name.contains(keyword));
+            conditionBuilder.or(stock.writer.name.contains(keyword));
         }
 
         booleanBuilder.and(conditionBuilder);
 
         return booleanBuilder;
-
     }
-
 }

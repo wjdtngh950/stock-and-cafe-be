@@ -1,11 +1,11 @@
-package com.blog.stockandcafebe.blog.article.controller;
+package com.blog.stockandcafebe.blog.stock.controller;
 
-import com.blog.stockandcafebe.blog.article.controller.dto.ArticleDto;
-import com.blog.stockandcafebe.blog.article.controller.dto.ArticleResponseDto;
-import com.blog.stockandcafebe.blog.article.repository.entity.Article;
-import com.blog.stockandcafebe.blog.article.service.ArticleService;
 import com.blog.stockandcafebe.blog.common.dto.PageRequestDto;
 import com.blog.stockandcafebe.blog.common.dto.PageResultDto;
+import com.blog.stockandcafebe.blog.stock.controller.dto.StockDto;
+import com.blog.stockandcafebe.blog.stock.controller.dto.StockResponseDto;
+import com.blog.stockandcafebe.blog.stock.repository.entity.Stock;
+import com.blog.stockandcafebe.blog.stock.service.StockService;
 import com.blog.stockandcafebe.security.entity.MemberUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,61 +19,61 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/v1/articles")
+@RequestMapping("/api/v1/stocks")
 @RequiredArgsConstructor
-public class ArticleController {
+public class StockController {
 
-    private final ArticleService articleService;
+    private final StockService stockService;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ArticleDto> register(
+    public ResponseEntity<StockDto> register(
             @AuthenticationPrincipal MemberUser memberUser,
-            @RequestBody ArticleDto articleDto
+            @RequestBody StockDto stockDto
     ) {
         return new ResponseEntity<>(
-                articleService.register(memberUser.getMemberDto().getEmail(), articleDto),
+                stockService.register(memberUser.getMemberDto().getEmail(), stockDto),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("/{articleId}")
-    public ResponseEntity<ArticleResponseDto> read(@PathVariable Long articleId) {
+    @GetMapping("/{stockId}")
+    public ResponseEntity<StockResponseDto> read(@PathVariable Long stockId) {
         return new ResponseEntity<>(
-                articleService.getDetail(articleId),
+                stockService.getDetail(stockId),
                 HttpStatus.OK
         );
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDto<ArticleResponseDto, Article>> getList(@ModelAttribute PageRequestDto pageRequestDto) {
+    public ResponseEntity<PageResultDto<StockResponseDto, Stock>> getList(@ModelAttribute PageRequestDto pageRequestDto) {
         return new ResponseEntity<>(
-                articleService.getPage(pageRequestDto),
+                stockService.getPage(pageRequestDto),
                 HttpStatus.OK
         );
     }
 
-    @PatchMapping(value = "/{articleId}")
+    @PatchMapping(value = "/{stockId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ArticleResponseDto> modify(
-            @PathVariable Long articleId,
+    public ResponseEntity<StockResponseDto> modify(
+            @PathVariable Long stockId,
             @AuthenticationPrincipal MemberUser memberUser,
-            @RequestBody ArticleDto articleDto
+            @RequestBody StockDto stockDto
     ) {
         return new ResponseEntity<>(
-                articleService.modify(articleId, memberUser.getMemberDto().getEmail(), articleDto),
+                stockService.modify(stockId, memberUser.getMemberDto().getEmail(), stockDto),
                 HttpStatus.OK
         );
     }
 
 
-    @DeleteMapping(value = "/{articleId}")
+    @DeleteMapping(value = "/{stockId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> remove(
-            @PathVariable Long articleId,
+            @PathVariable Long stockId,
             @AuthenticationPrincipal MemberUser memberUser
     ) {
-        articleService.remove(articleId, memberUser.getMemberDto().getEmail());
+        stockService.remove(stockId, memberUser.getMemberDto().getEmail());
         return new ResponseEntity<>(
                 null,
                 HttpStatus.OK
@@ -81,4 +81,3 @@ public class ArticleController {
     }
 
 }
-
