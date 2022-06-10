@@ -66,6 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/authenticate").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/members").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/stocks").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/stocks/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/articles").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/articles/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/articles/*/replies").permitAll()
